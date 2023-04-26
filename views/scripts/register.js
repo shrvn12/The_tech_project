@@ -112,7 +112,7 @@ document.querySelector(".registration_form").addEventListener("submit",(event)=>
 
     button.value = 'Working...'
 
-    let url = "https://weak-tick-sweatpants.cyclic.app/register"
+    let url = "./ttp/register"
 
     let payload = {
         name : username.value,
@@ -138,7 +138,7 @@ document.querySelector(".registration_form").addEventListener("submit",(event)=>
         alert(res.msg);
 
         if(res.registered){
-            let url = "https://weak-tick-sweatpants.cyclic.app/login";
+            let url = "./ttp/login";
 
             const loginpayload = {
                 email:email.value,

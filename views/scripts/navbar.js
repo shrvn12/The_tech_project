@@ -3,7 +3,7 @@ let login = document.querySelectorAll('.login');
 let logout = document.querySelector('.logout');
 
 logout.addEventListener('click',async () => {
-    await fetch('http://localhost:4500/ttp/logout',{
+    await fetch('./ttp/logout',{
         method:'GET',
         credentials:'same-origin'
     });
@@ -21,7 +21,7 @@ getUserData();
 
 async function getUserData(){
     try {
-        let res = await fetch('http://localhost:4500/ttp/getUserDetails');
+        let res = await fetch('./ttp/getUserDetails');
         if(res.status == 200){
             user = await res.json()
             username.style.display = 'block';

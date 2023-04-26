@@ -13,7 +13,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.json());
-app.set('views',__dirname+'/views')
+
 app.set('view engine','hbs');
 
 app.get("/",async (req, res) => {
@@ -23,7 +23,7 @@ app.get("/",async (req, res) => {
 
 app.use("/ttp",userRouter);
 app.use('/',fileRouter);
-app.use("/products",productRouter);
+app.use("/ttp/products",productRouter);
 
 app.listen(process.env.port, async () => {
   try {

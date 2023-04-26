@@ -14,7 +14,7 @@ cross.addEventListener('click',() => {
 
 // ====================================================================================================================
 
-const url = "https://weak-tick-sweatpants.cyclic.app/products";
+const url = "./ttp/products";
 let filters = JSON.parse(localStorage.getItem('tech_project_filters')) || {};
 let brandsCheckbox = document.querySelectorAll('#brands input[type=checkbox]');
 const series = {

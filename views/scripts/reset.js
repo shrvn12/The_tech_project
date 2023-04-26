@@ -18,7 +18,7 @@ document.querySelector(".reset_form").addEventListener("submit",async(event)=>{
     document.querySelector('.reset_form>button').innerText = 'working...'
 
 
-    let res = await fetch("http://localhost:4500/ttp/resetpswd",{
+    let res = await fetch("./ttp/resetpswd",{
         method:"PATCH",
         headers:{
             "content-type":"application/json"

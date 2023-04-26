@@ -40,7 +40,7 @@ document.querySelector(".login_form").addEventListener("submit",(event)=>{
         password: password.value
     }
 
-    let url = "http://localhost:4500/ttp/login";
+    let url = "./ttp/login";
 
     login(url);
 

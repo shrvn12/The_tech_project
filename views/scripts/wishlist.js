@@ -1,4 +1,4 @@
-let url = "http://localhost:4500/ttp/wishlist";
+let url = "./ttp/wishlist";
 
 let container = document.querySelector(".gallery");
 
@@ -19,7 +19,7 @@ async function getitems(){
         let data = [];
         
         for(let elem of res){
-            let url = `https://weak-tick-sweatpants.cyclic.app/products/${elem}`;
+            let url = `./ttp/products/${elem}`;
             const res = await (await fetch(url)).json();
             console.log(res);
             data.push(res);
@@ -85,7 +85,7 @@ function render(data){
 
 async function removefromwishlist(id){
     try {
-        const url = `http://localhost:4500/ttp/removefromwishlist/${id}`
+        const url = `./ttp/removefromwishlist/${id}`
         let response = await fetch(url,{
             method:"DELETE",
             headers:{

@@ -26,7 +26,7 @@ heart.addEventListener("click",(event) => {
     }
 })
 
-const url = `https://weak-tick-sweatpants.cyclic.app/products/${id}`;
+const url = `./ttp/products/${id}`;
 
 async function getdata(url){
     try {
@@ -184,7 +184,7 @@ function addfunctionality(){
 }
 
 async function checkinwishlist(){
-        let res = await fetch("http://localhost:4500/ttp/wishlist")
+        let res = await fetch("./ttp/wishlist")
     
         if(res.status == 200){
             res = await res.json();
@@ -208,7 +208,7 @@ async function checkinwishlist(){
 
 async function addtowishlist(){
     try {
-        const url = `http://localhost:4500/ttp/addtowishlist/${id}`
+        const url = `./ttp/addtowishlist/${id}`
         let response = await fetch(url,{
             method:"PATCH",
             headers:{
@@ -228,7 +228,7 @@ async function addtowishlist(){
 
 async function removefromwishlist(){
     try {
-        const url = `http://localhost:4500/ttp/removefromwishlist/${id}`
+        const url = `./ttp/removefromwishlist/${id}`
         let response = await fetch(url,{
             method:"DELETE",
             headers:{
@@ -251,7 +251,7 @@ wishlistbutton.addEventListener("click",async ()=>{
     if(wishlistbutton.innerText == "Add to wishlist"){
 
         try {
-            const url = `https://weak-tick-sweatpants.cyclic.app/addtowishlist/${res._id}`
+            const url = `./ttp/addtowishlist/${res._id}`
             let response = await fetch(url,{
                 method:"PATCH",
                 headers:{
@@ -276,7 +276,7 @@ wishlistbutton.addEventListener("click",async ()=>{
     else{
         
         try {
-            const url = `https://weak-tick-sweatpants.cyclic.app/removefromwishlist/${res._id}`
+            const url = `./ttp/removefromwishlist/${res._id}`
             let response = await fetch(url,{
                 method:"DELETE",
                 headers:{

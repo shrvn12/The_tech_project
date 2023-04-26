@@ -23,7 +23,7 @@ document.querySelector(".email").addEventListener("submit",async (event)=>{
 
     let prev_text = document.querySelector(".email>button").innerText;
     document.querySelector(".email>button").innerText = "Working..."
-    let res = await fetch("http://localhost:4500/ttp/getcode",{
+    let res = await fetch("./ttp/getcode",{
         method:"POST",
         headers:{
             "content-type":"application/json"
@@ -58,7 +58,7 @@ document.querySelector(".otp").addEventListener("submit",async (event)=>{
     let prevtext = document.querySelector(".otp>button").innerText;
     document.querySelector(".otp>button").innerText = "Working..."
 
-    let res = await fetch("http://localhost:4500/ttp/verifycode",{
+    let res = await fetch("./ttp/verifycode",{
         method:"POST",
         headers:{
             "content-type":"application/json"

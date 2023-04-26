@@ -60,7 +60,7 @@ fileRouter.get('/reset_pswd',(req, res) => {
         res.render('reset_pswd');
     }
     else{
-        res.redirect('http://localhost:4500/');
+        res.redirect('./');
     }
 })
 
