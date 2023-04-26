@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.json());
 
+app.set('views',__dirname+'/views');
 app.set('view engine','hbs');
 
 app.get("/",async (req, res) => {
