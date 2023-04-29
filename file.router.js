@@ -83,27 +83,27 @@ fileRouter.get('/wishlist',(req, res) => {
 
 fileRouter.get('/oppo',(req, res) => {
     // res.sendFile(__dirname+'/views/oppo.html')
-    res.render('oppo');
+    res.render('Oppo');
 })
 
 fileRouter.get('/vivo',(req, res) => {
     // res.sendFile(__dirname+'/views/vivo.html');
-    res.render('vivo');
+    res.render('Vivo');
 })
 
 fileRouter.get('/samsung',(req, res) => {
     // res.sendFile(__dirname+'/views/samsung.html')
-    res.render('samsung');
+    res.render('Samsung');
 })
 
 fileRouter.get('/xiaomi',(req, res) => {
     // res.sendFile(__dirname+'/views/xiaomi.html')
-    res.render('xiaomi');
+    res.render('Xiaomi');
 })
 
 fileRouter.get('/motorola',(req, res) => {
     // res.sendFile(__dirname+'/views/motorola.html')
-    res.render('motorola');
+    res.render('Motorola');
 })
 
 module.exports = {
