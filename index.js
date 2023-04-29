@@ -5,6 +5,7 @@ const { connection } = require("./configs/db");
 const { userRouter } = require("./routes/user.routes");
 const { productRouter } = require("./routes/product.routes");
 const { fileRouter } = require("./file.router");
+const {passport} = require("./configs/google.oauth");
 require("dotenv").config();
 
 const app = express();
@@ -20,6 +21,16 @@ app.set('view engine','hbs');
 app.get("/",async (req, res) => {
   // res.sendFile(__dirname+'/views/index.html');
   res.render('index');
+});
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile','email'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login', session: false }),
+  function(req, res) {
+    console.log(req.user);
+    res.redirect('/');
 });
 
 app.use("/ttp",userRouter);

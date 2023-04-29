@@ -86,3 +86,14 @@ p>a{
     text-decoration: none;
     color: rgb(43, 43, 216);
 }
+.oauth{
+    width: 5%;
+    margin: auto;
+    margin-top: 2%;
+}
+.oauth>img{
+    width: 70%;
+    display: block;
+    margin: auto;
+    cursor: pointer;
+}
