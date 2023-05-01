@@ -68,6 +68,67 @@ app.get('/auth/google/callback',
     res.redirect('/');
 });
 
+app.get('/auth/github',async (req, res) => {
+  const {code} = req.query;
+  console.log(code);
+  let response = await fetch('https://github.com/login/oauth/access_token',{
+    method:'POST',
+    headers:{
+      'content-type':'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
+      code
+    })
+  })
+
+  response = await response.json();
+
+  let userDetails = await fetch('https://api.github.com/user',{
+    method:'GET',
+    headers:{
+      authorization: `Bearer ${response.access_token}`
+    }
+  })
+
+  userDetails = await userDetails.json();
+
+  const user = await userModel.findOne({email: userDetails.email});
+  if(user){
+    const {name, email, password, role, wishlist, oauth} = user
+    const payload = {name, email, password, role, wishlist, oauth};
+    const token = jwt.sign(payload,process.env.key);
+    res.cookie('token',token);
+  }
+  else{
+    let payload = {
+      name: userDetails.name,
+      email: userDetails.email,
+      password: await bcrypt.hash('vansh',+process.env.saltRounds),
+      role: "user",
+      wishlist: [],
+      oauth: {
+        github: userDetails.id,
+        registered: false
+      }
+    }
+
+    payload.oauth = CryptoJS.AES.encrypt(JSON.stringify(payload.oauth),process.env.cryptoKey).toString();
+    console.log(payload);
+    const new_user = new userModel(payload);
+
+    await new_user.save();
+
+    const token = jwt.sign(payload,process.env.key);
+    res.cookie('token',token);
+
+  }
+  
+  res.redirect('/');
+})
+
 app.use("/ttp",userRouter);
 app.use('/',fileRouter);
 app.use("/ttp/products",productRouter);
