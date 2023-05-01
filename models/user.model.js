@@ -4,9 +4,9 @@ const userSchema = mongoose.Schema({
     name:String,
     email:String,
     password:String,
-    role:String,
+    role:{type: String, default: 'user'},
     wishlist: {type:Array, default:[]},
-    oauth: {type:Array, default:[]}
+    oauth: {type:Object, default:{}}
 })
 
 const userModel = mongoose.model("users",userSchema);

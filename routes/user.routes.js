@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
+const CryptoJS = require("crypto-js");
 const mongoose = require("mongoose")
 require("dotenv").config();
 
@@ -29,12 +30,22 @@ var transporter = nodemailer.createTransport({
 
 userRouter.post("/register",validate(["email","password","name"]), async (req, res) => {
   let data = req.body;
-
   let account = await userModel.findOne({"email":data.email});
-
-  if(account){
-    res.send({msg:"account already exists"});
-    return;
+  if(account.oauth){
+    const bytes = CryptoJS.AES.decrypt(account.oauth, process.env.cryptoKey);
+    account.oauth = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  }
+  if(account.oauth && account.oauth.registered === false){
+    const payload = {
+      name: data.name,
+      email: data.email,
+      password: bcrypt.hashSync(data.password,+saltRounds)
+    }
+    await userModel.findByIdAndUpdate(account.id,payload);
+    return res.status(201).send({ msg: `registration successful`, registered:true });
+  }
+  else if(account){
+    return res.send({msg:"account already exists"});
   }
 
   const mail = {
@@ -43,34 +54,50 @@ userRouter.post("/register",validate(["email","password","name"]), async (req, r
     subject:"Welcome message",
     text:"welcome to app"
   }
-  if (data.name == "admin1") {
+  if (data.email == "singhshravan1208@gmail.com") {
     data.role = "superadmin";
-  } 
-  else {
-    data.role = "user";
   }
 
-  bcrypt.hash(data.password, +saltRounds, async (err, hash) => {
-    if (err) {
+  const payload = {
+    name: data.name,
+    email: data.email,
+    password: bcrypt.hashSync(data.password,+saltRounds)
+  }
+
+  const user = new userModel(payload);
+  await user.save();
+  transporter.sendMail(mail,(err,response)=>{
+    if(err){
       console.log(err);
-      res.send({ msg: "something went wrong" ,error:err.message});
-    } else {
-      data.password = hash;
-      const user = new userModel(data);
-      await user.save();
-
-      transporter.sendMail(mail,(err,res)=>{
-        if(err){
-          console.log(err);
-        }
-        else{
-          console.log(res);
-        }
-      })
-
-      res.send({ msg: `registration successful as ${data.role}`, registered:true });
     }
-  });
+    else{
+      console.log(response);
+      res.send({ msg: `registration successful`, registered:true });
+    }
+  })
+
+
+  // bcrypt.hash(data.password, +saltRounds, async (err, hash) => {
+  //   if (err) {
+  //     console.log(err);
+  //     res.send({ msg: "something went wrong" ,error:err.message});
+  //   } else {
+  //     data.password = hash;
+  //     const user = new userModel(data);
+  //     await user.save();
+
+  //     transporter.sendMail(mail,(err,res)=>{
+  //       if(err){
+  //         console.log(err);
+  //       }
+  //       else{
+  //         console.log(res);
+  //       }
+  //     })
+
+  //     res.send({ msg: `registration successful as ${data.role}`, registered:true });
+  //   }
+  // });
 });
 
 userRouter.post("/login",validate(["email","password"]),auhtorizor, async (req, res) => {
@@ -81,6 +108,7 @@ userRouter.post("/login",validate(["email","password"]),auhtorizor, async (req, 
   const refresh_token = jwt.sign(dbdata.toJSON(),process.env.refreshkey,{expiresIn:"7d"})
   res.clearCookie('user');
   res.cookie('token',token);
+  console.log(res.cookie);
   res.send({ msg: `login successful as ${dbdata.role}`, token, refresh_token, logged_in:true, name:dbdata.name});
 });
 
@@ -354,6 +382,7 @@ userRouter.delete("/removefromwishlist/:id",(req,res)=>{
 })
 
 userRouter.get("/getUserDetails",(req, res) => {
+  // console.log(req.cookies);
   const token = req.cookies.token;
   if(!token){
     return res.status(401).send({msg:'user not found'});
@@ -364,13 +393,15 @@ userRouter.get("/getUserDetails",(req, res) => {
       res.status(500).send({msg:'Something went wrong', error:err.message});
     }
     else{
+      console.log(decoded);
       res.status(200).send(decoded);
     }
   })
 })
 
 userRouter.get('/logout',(req, res) => {
-  res.clearCookie('token','user');
+  res.clearCookie('token');
+  res.clearCookie('user');
   res.sendStatus(200);
 })
 

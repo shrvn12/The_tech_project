@@ -24,6 +24,7 @@ async function getUserData(){
         let res = await fetch('./ttp/getUserDetails');
         if(res.status == 200){
             user = await res.json()
+            // console.log(user);
             username.style.display = 'block';
             username.innerText = user.name;
             for(let elem of login){
