@@ -94,7 +94,7 @@ app.get('/auth/github',async (req, res) => {
   })
 
   userDetails = await userDetails.json();
-  
+
   console.log(userDetails);
 
   const user = await userModel.findOne({email: userDetails.email});
@@ -140,7 +140,7 @@ app.listen(process.env.port, async () => {
     await connection;
     console.log("connected to DB");
   } catch (error) {
-    console.log("error while connecting to server");
+    console.log("error while connecting to DB");
     console.log(error);
   }
   console.log(`server is running at ${process.env.port}`);
