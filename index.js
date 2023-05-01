@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const CryptoJS = require("crypto-js");
+const { Octokit } = require('octokit')
 const { connection } = require("./configs/db");
 const { userRouter } = require("./routes/user.routes");
 const { productRouter } = require("./routes/product.routes");
@@ -70,21 +71,22 @@ app.get('/auth/google/callback',
 
 app.get('/auth/github',async (req, res) => {
   const {code} = req.query;
-  console.log(code);
   let response = await fetch('https://github.com/login/oauth/access_token',{
     method:'POST',
     headers:{
-      'content-type':'application/json',
+      'Content-type':'application/json',
       Accept: 'application/json'
     },
     body: JSON.stringify({
       client_id: process.env.GITHUB_CLIENT_ID,
       client_secret: process.env.GITHUB_CLIENT_SECRET,
-      code
+      code,
+      redirect_uri: 'http://localhost:4500/auth/github'
     })
   })
 
   response = await response.json();
+  console.log(response);
 
   let userDetails = await fetch('https://api.github.com/user',{
     method:'GET',
@@ -94,10 +96,23 @@ app.get('/auth/github',async (req, res) => {
   })
 
   userDetails = await userDetails.json();
+  
+  let userEmail = await fetch('https://api.github.com/user/emails',{
+    method:'GET',
+    headers:{
+      authorization: `Bearer ${response.access_token}`
+    }
+  })
 
-  console.log(userDetails);
+  userEmail = await userEmail.json();
 
-  const user = await userModel.findOne({email: userDetails.email});
+  console.log(userEmail);
+
+  var email = userEmail.filter(elem => elem.primary === true)[0].email;
+
+  console.log(email);
+
+  const user = await userModel.findOne({email});
   if(user){
     const {name, email, password, role, wishlist, oauth} = user
     const payload = {name, email, password, role, wishlist, oauth};
@@ -107,7 +122,7 @@ app.get('/auth/github',async (req, res) => {
   else{
     let payload = {
       name: userDetails.name,
-      email: userDetails.email,
+      email: email,
       password: await bcrypt.hash('vansh',+process.env.saltRounds),
       role: "user",
       wishlist: [],
