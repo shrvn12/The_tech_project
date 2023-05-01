@@ -81,7 +81,7 @@ app.get('/auth/github',async (req, res) => {
       client_id: process.env.GITHUB_CLIENT_ID,
       client_secret: process.env.GITHUB_CLIENT_SECRET,
       code,
-      redirect_uri: 'http://localhost:4500/auth/github'
+      redirect_uri: 'https://thetechproject.cyclic.app/auth/github'
     })
   })
 
