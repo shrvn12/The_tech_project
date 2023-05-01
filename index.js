@@ -94,6 +94,8 @@ app.get('/auth/github',async (req, res) => {
   })
 
   userDetails = await userDetails.json();
+  
+  console.log(userDetails);
 
   const user = await userModel.findOne({email: userDetails.email});
   if(user){
