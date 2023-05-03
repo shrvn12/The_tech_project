@@ -20,7 +20,7 @@
 ## 😊 About <a name = "about"></a>
 - This is a Full-stack express project Built Individually in a week.
 - A website designed to view detailed info of latest technology related products.
-- It features latest relesed gadjets and their accurate specifications.
+- It features latest relesed gadgets and their accurate specifications.
 - It has a product gallery to view and filter products according to user.
 - A user specific wishlist to save the products.
 - O-Auth service is provided to ensure hassle free sign-in.
