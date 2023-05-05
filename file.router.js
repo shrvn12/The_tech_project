@@ -56,7 +56,7 @@ fileRouter.get('/Product',async (req, res) => {
 fileRouter.get('/reset_pswd',(req, res) => {
     console.log(req.cookies);
     if(req.cookies.user && req.cookies.user.PasswordResetAccess){
-        res.sendFile(__dirname+'/views/reset_pswd.html');
+        // res.sendFile(__dirname+'/views/reset_pswd');
         res.render('reset_pswd');
     }
     else{
