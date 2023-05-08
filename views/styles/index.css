@@ -9,6 +9,8 @@ body>h1{
     display: flex;
     /* border: 1px solid white; */
     overflow-x: scroll;
+    /* scroll-behavior: smooth; */
+    /* transition: 0.5s; */
 }
 
 .cards::-webkit-scrollbar{
@@ -22,14 +24,9 @@ body>h1{
     /* border: 1px solid white; */
     background-color: #26222b;
     border-radius: 10px;
-    /* box-shadow: rgba(121, 121, 121, 0.534) 0px 0px 5px; */
     transition: 0.3s;
     background-color: #1b1c21;
     cursor: pointer;
-}
-
-.cards>div:hover{
-    box-shadow: rgba(184, 184, 184, 0.534) 0px 0px 10px;
 }
 
 .cards>div>img{
