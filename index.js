@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const CryptoJS = require("crypto-js");
-const { Octokit } = require('octokit')
 const { connection } = require("./configs/db");
 const { userRouter } = require("./routes/user.routes");
 const { productRouter } = require("./routes/product.routes");
