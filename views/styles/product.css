@@ -112,6 +112,7 @@
     color: white;
     font-size: small;
     margin-left: 2%;
+    text-transform: capitalize;
 }
 
 .details>h1{
@@ -129,9 +130,16 @@
 
 .details>div:nth-child(4)>img{
     width: 15%;
-    /* border: 1px solid white; */
+    border: 1px solid transparent;
+    border-radius: 10px;
+    transition: 0.3s;
     cursor: pointer;
     left: 0;
+}
+
+.stores{
+    border: 1px solid;
+    width: 100%;
 }
 
 /* =======================================Specs=========================== */

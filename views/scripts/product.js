@@ -1,5 +1,7 @@
 const id = document.querySelector('.main').id;
 
+let writing = false;
+
 const icons = {
     "apple":"https://raw.githubusercontent.com/shrvn12/tech_project_images/ea49a0fb9c42b3cf1e416256087b6887fc8bf6db/Smartphones/Apple/Icons/apple.svg",
     "asus":"https://raw.githubusercontent.com/shrvn12/tech_project_images/ea49a0fb9c42b3cf1e416256087b6887fc8bf6db/Smartphones/Asus/Icons/asus-rog.svg",
@@ -97,11 +99,16 @@ function renderImages(data){
     let main_images = document.querySelector('.main_img>div:nth-child(1)');
 
     let defaultcolor = Object.keys(data.images)[0];
+    let selectedcolor = null;
+    let colorName = document.querySelector('#color_name')
     main_images.innerHTML = '';
     images.innerHTML = '';
     for(let elem of data.images[defaultcolor]){
         let img = document.createElement('img');
         img.src = elem;
+        img.id = defaultcolor;
+        selectedcolor = defaultcolor;
+        colorName.innerText = selectedcolor.split("_").join(" ");
         let img2 = document.createElement('img');
         img2.src = elem;
         main_images.append(img);
@@ -115,19 +122,39 @@ function renderImages(data){
         img.title = key;
         img.src = data.images[key][0];
         img.addEventListener('click',(event) => {
+            selectedcolor = event.target.id
+            colorName.innerText = selectedcolor.split("_").join(" ");
+            for(let elem of colors_container.childNodes){
+                if(elem.id == selectedcolor){
+                    elem.style.border = "1px solid white";
+                }
+                else{
+                    elem.style.border = "0px";
+                }
+            }
             main_images.innerHTML = '';
             images.innerHTML = '';
             for(let elem of data.images[event.target.id]){
                 let img = document.createElement('img');
                 img.src = elem;
+                img.id = event.target.id;
                 let img2 = document.createElement('img');
                 img2.src = elem;
+                img2.id = event.target.id;
                 main_images.append(img);
                 images.append(img2);
             }
             addfunctionality();
         })
         colors_container.append(img);
+        for(let elem of colors_container.childNodes){
+            if(elem.id == selectedcolor){
+                elem.style.border = "1px solid white";
+            }
+            else{
+                elem.style.border = "0px";
+            }
+        }
     }
     addfunctionality();
 }
@@ -244,6 +271,20 @@ async function removefromwishlist(){
         alert("Try logging in again");
         console.log(error);
     }
+}
+
+function write(text, component){
+    if(!component.innerText || writing){
+        return;
+    }
+    let prev_text = component.innerText;
+    const erase = setInterval(() => {
+        component.innerText = component.innerText.substring(0, component.substring.length-1);
+        if(!component.innerText.length){
+            clearInterval(erase);
+            
+        }
+    }, 100)
 }
 
 /*

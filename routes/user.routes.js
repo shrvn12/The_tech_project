@@ -103,12 +103,10 @@ userRouter.post("/register",validate(["email","password","name"]), async (req, r
 userRouter.post("/login",validate(["email","password"]),auhtorizor, async (req, res) => {
   const data = req.body;
   const dbdata = await userModel.findOne({ email: data.email });
-  console.log(dbdata);
   const token = jwt.sign(dbdata.toJSON(), process.env.key);
   const refresh_token = jwt.sign(dbdata.toJSON(),process.env.refreshkey,{expiresIn:"7d"})
   res.clearCookie('user');
   res.cookie('token',token);
-  console.log(res.cookie);
   res.send({ msg: `login successful as ${dbdata.role}`, token, refresh_token, logged_in:true, name:dbdata.name});
 });
 
@@ -124,7 +122,6 @@ userRouter.post("/getcode", async (req,res)=>{
   const exp_time = 5*60*1000;
 
   const expires = Date.now() + exp_time;
-  console.log(code,expires,email);
 
   const payload = {
     code : await bcrypt.hash(code.toString(),+saltRounds),
@@ -204,7 +201,6 @@ userRouter.patch("/resetpswd",async(req,res)=>{
   if(!req.cookies.user.PasswordResetAccess){
     return res.status(400).send('Access denied');
   }
-  console.log(data);
   const user = await codeModel.findOne({email});
   console.log(user);
   if(!user || !user.verified){
@@ -393,7 +389,6 @@ userRouter.get("/getUserDetails",(req, res) => {
       res.status(500).send({msg:'Something went wrong', error:err.message});
     }
     else{
-      console.log(decoded);
       res.status(200).send(decoded);
     }
   })

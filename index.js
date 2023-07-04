@@ -33,7 +33,6 @@ app.get('/auth/google',
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login', session: false }),
   async function(req, res) {
-    console.log(req.user._json);
     const user = await userModel.findOne({email: req.user._json.email});
     if(user){
       const {name, email, password, role, wishlist, oauth} = user
@@ -55,7 +54,6 @@ app.get('/auth/google/callback',
       }
 
       payload.oauth = CryptoJS.AES.encrypt(JSON.stringify(payload.oauth),process.env.cryptoKey).toString();
-      console.log(payload);
       const new_user = new userModel(payload);
 
       await new_user.save();
@@ -105,11 +103,9 @@ app.get('/auth/github',async (req, res) => {
 
   userEmail = await userEmail.json();
 
-  console.log(userEmail);
 
   var email = userEmail.filter(elem => elem.primary === true)[0].email;
 
-  console.log(email);
 
   if(!email){
     return res.redirect('/')
@@ -136,7 +132,6 @@ app.get('/auth/github',async (req, res) => {
     }
 
     payload.oauth = CryptoJS.AES.encrypt(JSON.stringify(payload.oauth),process.env.cryptoKey).toString();
-    console.log(payload);
     const new_user = new userModel(payload);
 
     await new_user.save();
